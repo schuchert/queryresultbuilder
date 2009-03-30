@@ -5,7 +5,7 @@
 	<property name="testOutDir" value="test-dir" />
 	<property name="libDir" value="lib" />
 	<property name="jarFile" value="${distDir}/QueryResultBuilder.jar" />
-  <property name="reflectionDir" value="../ReflectionUtil" />
+  <property name="reflectionDir" value="../reflectionutil" />
 
 	<path id="classpath">
 		<pathelement path="${outputDir}" />

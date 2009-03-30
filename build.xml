@@ -1,0 +1,62 @@
+<project name="ReflectionUtil" default="build_dist">
+	<property name="sourceDir" value="src" />
+	<property name="outputDir" value="bin" />
+	<property name="distDir" value="dist" />
+	<property name="testOutDir" value="test-dir" />
+	<property name="libDir" value="lib" />
+	<property name="jarFile" value="${distDir}/QueryResultBuilder.jar" />
+  <property name="reflectionDir" value="../ReflectionUtil" />
+
+	<path id="classpath">
+		<pathelement path="${outputDir}" />
+		<fileset dir="${libDir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${outputDir}" />
+		<delete dir="${distDir}" />
+		<delete dir="${testOutDir}" />
+	</target>
+
+	<target name="prepare" depends="clean">
+		<mkdir dir="${outputDir}" />
+		<mkdir dir="${distDir}" />
+		<mkdir dir="${testOutDir}" />
+	</target>
+
+	<target name="compile" depends="prepare">
+		<javac srcdir="${sourceDir}" destdir="${outputDir}" classpathref="classpath" debug="true" source="1.5" target="1.5" />
+	</target>
+
+	<target name="unit_tests" depends="compile">
+		<junit forkmode="once" fork="yes" printsummary="no" haltonerror="yes">
+			<classpath refid="classpath" />
+			<formatter type="xml" usefile="true" />
+			<formatter type="plain" usefile="false" />
+			<batchtest todir="${testOutDir}">
+				<fileset dir="${sourceDir}">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="build_dist" depends="unit_tests">
+		<jar jarfile="${jarFile}">
+			<fileset dir="${outputDir}" includes="**/*.class" />
+			<fileset dir="${sourceDir}" includes="**/*.java" />
+			<include name="**/*.class" />
+		</jar>
+	</target>
+
+	<target name="build_dependencies">
+		<ant inheritAll="false" antfile="../ReflectionUtil/build.xml" />
+    <copy file="${reflectionDir}/dist/ReflectionUtil.jar" todir="${libDir}" />
+	</target>
+
+	<target name="copy_to_lib" depends="build_dist">
+		<copy file="${jarFile}" todir="${libDir}" />
+	</target>
+</project>

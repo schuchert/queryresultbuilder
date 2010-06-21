@@ -98,7 +98,7 @@ public class QueryResultBuilder {
         register(property, ignoreFieldHandler);
     }
 
-    public static void addDefaultTypeHandler(Class<String> clazz, PropertyHandler handler) {
+    public static void addDefaultTypeHandler(Class<?> clazz, PropertyHandler handler) {
         globalTypeBasedPropertyHandlers.put(clazz, handler);
     }
 }
